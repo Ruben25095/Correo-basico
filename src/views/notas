@@ -1,0 +1,85 @@
+<template>
+  <div class="mail-layout">
+    <!-- PANEL IZQUIERDO -->
+    <aside class="mail-list">
+      <ul>
+        <li
+          v-for="m in messages"
+          :key="m.id"
+          :class="{ active: m.id == route.params.id }"
+        >
+          <router-link :to="`/message/${m.id}`">
+            <strong v-if="!m.is_read">●</strong>
+            {{ m.subject }}
+          </router-link>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- PANEL DERECHO -->
+    <section class="content-panel" v-if="msg">
+      <h2>{{ msg.subject }}</h2>
+
+      <div class="meta">
+        <span><strong>De:</strong> {{ msg.from }}</span>
+        <span><strong>Para:</strong> {{ msg.to }}</span>
+      </div>
+
+      <hr />
+
+      <p class="body">{{ msg.body }}</p>
+
+      <button class="trash" @click="trash">
+        🗑 Mover a la papelera
+      </button>
+    </section>
+
+    <section v-else class="content-panel empty">
+      Selecciona un mensaje
+    </section>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import api from "../api/axios";
+
+const route = useRoute();
+const router = useRouter();
+
+const messages = ref([]);
+const msg = ref(null);
+
+/* Cargar lista */
+const loadMessages = async () => {
+  const res = await api.get("/api/messages?box=sent");
+  messages.value = res.data.data;
+};
+
+/* Cargar mensaje seleccionado */
+const loadMessage = async (id) => {
+  if (!id) return;
+  const res = await api.get(`/api/messages/${id}`);
+  msg.value = res.data;
+};
+
+/* Mover a papelera */
+const trash = async () => {
+  await api.patch(`/api/messages/${route.params.id}/trash`, {
+    in_trash: true,
+  });
+  router.push("/");
+};
+
+onMounted(() => {
+  loadMessages();
+  loadMessage(route.params.id);
+});
+
+/* Recargar mensaje al cambiar ruta */
+watch(
+  () => route.params.id,
+  (id) => loadMessage(id)
+);
+</script>
