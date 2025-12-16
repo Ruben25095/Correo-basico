@@ -29,6 +29,9 @@
 <script setup>
 import { ref } from "vue";
 import api from "../api/axios";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const email = ref("");
 const password = ref("");
@@ -39,6 +42,7 @@ const register = async () => {
     password: password.value
   });
   alert("Registrado, ahora inicia sesión");
+  router.push("/login");
 };
 </script>
 

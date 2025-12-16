@@ -19,9 +19,10 @@ import Papelera from "../views/Papelera.vue";   //nueva ruta
   { path: "/papelera/:id", component: Papelera, meta: { auth: true } }
 ];*/
 const routes = [
+  { path: "/", redirect: "/login" },
     { path: "/login", component: Login },
     { path: "/register", component: Register },
-  
+     
     { path: "/aux1", redirect: "/inbox" },
     { path: "/inbox", component: Inbox, meta: { auth: true } },
     { path: "/inbox/:id", component: Inbox, meta: { auth: true } },

@@ -52,7 +52,7 @@
       // guardar token
       localStorage.setItem("token", res.data.data.access_token);
       // Usamos location.href para asegurar una recarga completa del layout (ej: mostrar el sidebar)
-      location.href = "/"; 
+      location.href = "/inbox"; 
     } catch (error) {
       // Manejo de errores más específico si el backend lo proporciona
       const message = error.response?.data?.message || "Credenciales inválidas. Inténtalo de nuevo.";
