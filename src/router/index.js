@@ -6,7 +6,8 @@ import Inbox from "../views/Inbox.vue";
 import Message from "../views/Message.vue";
 import Send from "../views/Send.vue";
 import Papelera from "../views/Papelera.vue";   //nueva ruta
-
+import ForgotPassword from "../views/ForgotPassword.vue"; 
+import ResetPassword from "../views/ResetPassword.vue";
 /*const routes = [
   { path: "/login", component: Login },
   { path: "/register", component: Register },
@@ -19,6 +20,8 @@ import Papelera from "../views/Papelera.vue";   //nueva ruta
   { path: "/papelera/:id", component: Papelera, meta: { auth: true } }
 ];*/
 const routes = [
+  { path: "/forgotpassword", component: ForgotPassword }, 
+  { path: "/reset", component: ResetPassword }, 
   { path: "/", redirect: "/login" },
     { path: "/login", component: Login },
     { path: "/register", component: Register },

@@ -21,8 +21,10 @@
         <button>Registrar</button>
       </form>
 
-  
+      <button @click="volver" class="volver">volver</button>
+      
     </div>
+    
   </div>
 </template>
 
@@ -35,7 +37,7 @@ const router = useRouter();
 
 const email = ref("");
 const password = ref("");
-
+/*
 const register = async () => {
   await api.post("/api/auth/register", {
     email: email.value,
@@ -43,7 +45,34 @@ const register = async () => {
   });
   alert("Registrado, ahora inicia sesión");
   router.push("/login");
+};*/
+const register = async () => {
+  try {
+    await api.post("/api/auth/register", {
+      email: email.value,
+      password: password.value,
+    });
+
+    alert("Registrado correctamente");
+    router.push("/login");
+
+  } catch (err) {
+    if (err.response?.status === 409) {
+      alert("Este correo ya está registrado");
+    } else if (err.response?.status === 400) {
+      alert("Este Correo ya esta registrado");
+    } else {
+      alert(" Error del servidor");
+    }
+  }
 };
+
+const volver = () => {
+  router.push("/login");
+};
+
+
+
 </script>
 
 <style scoped>
@@ -74,6 +103,15 @@ const register = async () => {
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+.volver {
+  margin-top: 10px;
+  background: none;
+  border: none;
+  color: #6366f1;
+  cursor: pointer;
+  
 }
 
 .auth-card input {
